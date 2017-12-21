@@ -51,6 +51,8 @@ private:
   scheduler::EventId m_adjustCapacityEvent;
   time::nanoseconds m_adjustCapacityInterval;
   uint64_t m_bps;
+  scheduler::EventId m_congestedTimeout;
+
 };
 
 } // namespace face

@@ -24,8 +24,10 @@
  */
 
 #include "face.hpp"
+#include <iostream>
 
 namespace nfd {
+
 namespace face {
 
 Face::Face(unique_ptr<LinkService> service, unique_ptr<Transport> transport)
@@ -41,6 +43,7 @@ Face::Face(unique_ptr<LinkService> service, unique_ptr<Transport> transport)
 {
   m_service->setFaceAndTransport(*this, *m_transport);
   m_transport->setFaceAndLinkService(*this, *m_service);
+  m_state = InrppState::OPEN_LOOP;
 }
 
 std::ostream&
@@ -50,6 +53,15 @@ operator<<(std::ostream& os, const FaceLogHelper<Face>& flh)
   os << "[id=" << face.getId() << ",local=" << face.getLocalUri() <<
         ",remote=" << face.getRemoteUri() << "] ";
   return os;
+}
+
+void
+Face::setInrppState(InrppState state)
+{
+ // NFD_LOG_FACE_TRACE("setInrppState face=" << getId() << " " << state);
+	if(state==InrppState::CLOSED_LOOP)std::cout << "CLOSED_LOOP face " << getId() << std::endl;
+	else std::cout << "OPEN_LOOP face " << getId() << std::endl;
+  m_state = state;
 }
 
 } // namespace face
